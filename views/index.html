@@ -35,8 +35,9 @@
         This works by: 
       </p>
       <ol>
-        <li>generating a unique Web push URL for you at <a href="https://webpush.rocks" target="_blank">webpush.rock</a></li>
+        <li>generating a unique Web push URL for you at <a href="https://webpush.rocks" target="_blank">webpush.rocks</a></li>
         <li>subscribing you to the remote hub with a unqiue url generated from <a href="https://webpush.rocks" target="_blank">webpush.rocks</a></li>
+        <li>when a feed updates, it pings the hub, which pings this, and then sends the update to your subscription.</li>
       </ol>
       <p>
         Even though no of subscription information is retained on webpush.rocks or this server. This is an experiment, don't assume that the above is secure.
