@@ -20,7 +20,7 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 app.all('*', (req, res, next) => {
   // protocol check, if http, redirect to https
-  if(req.get('X-Forwarded-Proto').indexOf("https") == 0) {
+  if(req.get('X-Forwarded-Proto').indexOf('https') == 0) {
     return next();
   } else {
     res.redirect('https://' + req.hostname + req.url);
@@ -30,7 +30,6 @@ app.all('*', (req, res, next) => {
 
 app.use(express.static('public'));
 
-// http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
@@ -53,7 +52,7 @@ app.post("/subscribe", urlencodedParser, function (request, response) {
       
   privateSubscriber.subscribe(topic, hub, function(err){
         if(err){
-            console.log("Failed subscribing");
+            console.log(`Failed subscribing: ${topic}, ${hub}`);
         }
     });
 });
@@ -62,8 +61,8 @@ app.post("/ubsubscribe", function (request, response) {
   response.sendStatus(200);
 });
 
-pubSubSubscriber.on("feed", data => data => {
-  console.log("feed", data);
+pubSubSubscriber.on('feed', data => data => {
+  console.log('feed', data);
 
   const subscribeCallback = new URL(data.callback);
   const endpointEncoded = subscribeCallback.pathname.replace('/pubsubhubbub/', '').replace(/\/$/,"");
@@ -75,16 +74,16 @@ pubSubSubscriber.on("feed", data => data => {
     url: `${data.topic}`
   };
   
-  fetch(endpoint, {method:"post", headers: {"content-type": "application/json"}, "content-type": "application/json", body: payload})
+  fetch(endpoint, {method:'post', headers: {'content-type': 'application/json'}, body: payload})
     .then(response=>console.log)
     .catch(err=>console.error)
 });
 
-pubSubSubscriber.on("subscribe", data => {
-  console.log("subscribe", data);
+pubSubSubscriber.on('subscribe', data => {
+  console.log('subscribe', data);
 
   const subscribeCallback = new URL(data.callback);
-  const endpointEncoded = subscribeCallback.pathname.replace('/pubsubhubbub/', '').replace(/\/$/,"");
+  const endpointEncoded = subscribeCallback.pathname.replace('/pubsubhubbub/', '').replace(/\/$/,'');
   const endpoint = querystring.unescape(endpointEncoded);
 
   const payload =  {
@@ -94,17 +93,17 @@ pubSubSubscriber.on("subscribe", data => {
   
   console.log(endpoint)
   
-  fetch(endpoint, {method:"post", headers: {"content-type": "application/json"}, body: JSON.stringify(payload)})
+  fetch(endpoint, {method:'post', headers: {'content-type': 'application/json'}, body: JSON.stringify(payload)})
     .then(response=>console.log)
     .catch(err=>console.error)
 
 });
 
-pubSubSubscriber.on("unsubscribe", data => {
-  console.log("unsubscribe", data);
+pubSubSubscriber.on('unsubscribe', data => {
+  console.log('unsubscribe', data);
 
   const subscribeCallback = new URL(data.callback);
-  const endpointEncoded = subscribeCallback.pathname.replace('/pubsubhubbub/', '').replace(/\/$/,"");
+  const endpointEncoded = subscribeCallback.pathname.replace('/pubsubhubbub/', '').replace(/\/$/,'');
   const endpoint = querystring.unescape(endpointEncoded);
 
   const payload =  {
@@ -112,15 +111,15 @@ pubSubSubscriber.on("unsubscribe", data => {
     body: `Unsubscribed from ${data.topic} on ${data.hub}`
   };
   
-  fetch(endpoint, {method:"post", headers: {"content-type": "application/json"}, body: payload})
+  fetch(endpoint, {method:'post', headers: {'content-type': 'application/json'}, body: payload})
     .then(response=>console.log)
     .catch(err=>console.error)
 });
 
-pubSubSubscriber.on("error", data => console.log("error", data));
+pubSubSubscriber.on('error', data => console.log('error', data));
 
-app.get("/pubsubhubbub/:endpoint/", pubSubSubscriber._onGetRequest.bind(pubSubSubscriber));
-app.post("/pubsubhubbub/:endpoint/", pubSubSubscriber._onPostRequest.bind(pubSubSubscriber));
+app.get('/pubsubhubbub/:endpoint/', pubSubSubscriber._onGetRequest.bind(pubSubSubscriber));
+app.post('/pubsubhubbub/:endpoint/', pubSubSubscriber._onPostRequest.bind(pubSubSubscriber));
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
