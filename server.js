@@ -10,7 +10,6 @@ var bodyParser = require('body-parser');
 
 const fetch = require('node-fetch');
 const URL = require('url').URL;
-//var multer = require('multer'); // v1.0.5
 
 const callbackPath = 'https://beryl-clover.glitch.me/pubsubhubbub/';
 var pubSubSubscriber = pubSubHubbub.createServer({
@@ -19,7 +18,16 @@ var pubSubSubscriber = pubSubHubbub.createServer({
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-// http://expressjs.com/en/starter/static-files.html
+app.all('*', (req, res, next) => {
+  // protocol check, if http, redirect to https
+  if(req.get('X-Forwarded-Proto').indexOf("https") == 0) {
+    return next();
+  } else {
+    res.redirect('https://' + req.hostname + req.url);
+  }
+});
+
+
 app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
