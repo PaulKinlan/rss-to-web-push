@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Get RSS feed updates sent directly to you via push notifications!</title>
+    <meta name="description" content="Get RSS feed updates sent directly to you via push notifications made with Glitch">
+    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <header>
+      <h1>
+        Get RSS feed updates sent directly to you via push notifications
+      </h1>
+    </header>
+
+    <main>
+      <p class="bold">Configure your push notifications</p>
+      <p>Get the RSS feed, get the PubsubHub and then get your unique push endpoint for your device.</p>
+      <form action="/subscribe" method="POST">
+        <label for="topic">Topic (URL for RSS feed):</label>
+        <input type="url" name="topic" placeholder="topic" value="https://medium.com/feed/dev-channel">
+        <label for="hub">Hub:</label>
+        <input type="url" name="hub" placeholder="hub" value="https://medium.superfeedr.com">
+        <label for="endpoint">webpush.rocks url:</label><input type="url" name="endpoint" placeholder="https://webpush.rocks/">
+        <a href="https://webpush.rocks" target="_blank">Get your endpoint URL</a>
+        <button type="submit">Subscribe</button>
+      </form>
+      <p>
+        No state is stored on this server.
+      </p>
+      <p>
+        This works by: 
+      </p>
+      <ol>
+        <li>generating a unique Web push URL for you at <a href="https://webpush.rocks" target="_blank">webpush.rock</a></li>
+        <li>subscribing you to the remote hub with a unqiue url generated from <a href="https://webpush.rocks" target="_blank">webpush.rocks</a></li>
+      </ol>
+      <p>
+        Even though no of subscription information is retained on webpush.rocks or this server. This is an experiment, don't assume that the above is secure.
+      </p>
+    </main>
+
+  </body>
+</html>
