@@ -57,7 +57,7 @@ app.post("/subscribe", urlencodedParser, function (request, response) {
     });
 });
 
-app.post("/ubsubscribe", function (request, response) {
+app.post("/unsubscribe", function (request, response) {
   response.sendStatus(200);
 });
 
@@ -90,9 +90,7 @@ pubSubSubscriber.on('subscribe', data => {
     title: `Subscribed to ${data.topic}`,
     body: `Subscribed to ${data.topic} on ${data.hub}`
   };
-  
-  console.log(endpoint)
-  
+    
   fetch(endpoint, {method:'post', headers: {'content-type': 'application/json'}, body: JSON.stringify(payload)})
     .then(response=>console.log)
     .catch(err=>console.error)

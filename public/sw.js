@@ -14,7 +14,7 @@ self.addEventListener('install', e => {
 });
 
 self.addEventListener('fetch', e => {
-  if(e.method === 'GET') { // we post to a server and we don't want to cache that... although we might want to do a friendly message
+  if(e.request.method === 'GET') { // we post to a server and we don't want to cache that... although we might want to do a friendly message
     e.respondWith(
       caches.match(e.request).then(response => {
         return response || fetch(e.request);
